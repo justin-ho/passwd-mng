@@ -1,37 +1,60 @@
 #!/usr/bin/python
 
-import getopt
+import sys
 import utils
 
 
 def main(argv):
+    """User interface for the Password manager"""
+    utils.print_splash()
     # Get the password from the user
-    passwd = utils.get_password()
+    utils.authenticate()
 
-    # print passwd
-
-    # prompt the user
-    menu = '\nWhat would you like to do?\n' \
+    # Menu that the user will see
+    menu = '\nWhat would you like to do?\n\n' \
            '1. Add Credentials\n' \
            '2. Get Credentials\n' \
            '3. Update Credentials\n' \
-           'Please enter the integer of your choice (1, 2, or 3): '
+           '4. Remove Credentials\n' \
+           '5. Quit\n\n' \
+           'Please enter the integer of your choice: '
     # user options
-    options = ['1', '2', '3']
+    options = ['1', '2', '3', '4', '5']
+    user_option = 0
 
-    # Get the Users input option, input must be a valid integer 1, 2, or 3
-    user_option = raw_input(menu)
-    while user_option not in options:
-        print '[ERROR] Improper input, please enter a valid integer.'
+    # Run until the user quits the program
+    while user_option != '5':
+        # Get the Users input option, input must be a valid integer 1, 2, 3, or 4
         user_option = raw_input(menu)
+        # User input must be valid to continue
+        while user_option not in options:
+            print '[ERROR] Improper input, please enter a valid integer (1 - 5).'
+            user_option = raw_input(menu)
 
-    if user_option == '1':
-        print 'You chose to Add Credentials!!'
-    elif user_option == '2':
-        print 'You chose to Get Credentials!!'
-    elif user_option == '3':
-        print 'You chose to Update Credentials!!'
+        # Perform the action based on the users choice
+        if user_option == '1':
+            print '********Add Credentials********'
+            utils.get_identifier()
+            utils.get_username()
+            utils.get_passwd()
+        elif user_option == '2':
+            print '********Get Credentials********'
+            # Use the identifier to get the username and password for the authenticated user
+            utils.get_identifier()
+        elif user_option == '3':
+            print '********Update Credentials********'
+            # Use the identifier and update the username and password for that identifier
+            utils.get_identifier()
+            # Get the new username and password to update
+            utils.get_username()
+            utils.get_passwd()
+        elif user_option == '4':
+            print '********Remove Credentials********'
+            # Use the identifier and remove the credentials from the datastore
+            utils.get_identifier()
+
+    print "Have a nice day!"
 
 
 if __name__ == "__main__":
-    main(utils.sys.argv[1:])
+    main(sys.argv[1:])
