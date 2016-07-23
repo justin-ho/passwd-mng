@@ -1,14 +1,18 @@
 #!/usr/bin/python
 
-import sys
 import utils
+import os
 
 
-def main(argv):
+def main():
     """User interface for the Password manager"""
     utils.print_splash()
-    # Get the password from the user
-    utils.authenticate()
+    # if there is no existing file get a new password for authentication
+    if os.path.isfile('.eta'):
+        # Get the password from the user
+        utils.authenticate()
+    else:
+        utils.new_passwd(utils.get_passwd())
 
     # Menu that the user will see
     menu = '\nWhat would you like to do?\n\n' \
@@ -57,4 +61,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

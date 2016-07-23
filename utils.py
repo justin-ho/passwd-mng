@@ -2,6 +2,8 @@
 
 import sys
 import getpass
+import hashlib
+import os
 
 
 def quit_m(message):
@@ -11,7 +13,17 @@ def quit_m(message):
 
 
 def check_passwd(passwd):
-    # Empty function stub
+    """Checks the validity of the password with the password file"""
+    fileobj = open('.eta', 'rb')
+    elements = fileobj.read().split('$')
+    try:
+        if hashlib.pbkdf2_hmac('SHA512', passwd, elements[1], 100000) != elements[2]:
+            return False
+    finally:
+        fileobj.flush()
+        fileobj.close()
+        elements[1] = 0
+        elements[2] = 0
     return True
 
 
@@ -22,6 +34,7 @@ def authenticate():
     # authentication error message
     auth_message = '[ERROR] Failed to authenticate. Incorrect password.'
 
+    # User gets 3 tries
     for count in range(0, 3):
         # get the authentication password from the user
         password = getpass.getpass('Please enter your password to access the password manager: ')
@@ -54,6 +67,19 @@ def get_passwd():
 
 
 def print_splash():
-    fo = open('banner.ascii', 'r')
-    print fo.read()
-    fo.close()
+    fileobj = open('banner.ascii', 'r')
+    print fileobj.read()
+    fileobj.close()
+
+
+def new_passwd(passwd='+35+Pass()'):
+    """Creates a new password for authentication"""
+    fileobj = open('.eta', 'wb')
+    salt = os.urandom(16)
+    while salt.find('$') != -1:
+        salt = os.urandom(16)
+    fileobj.write('$' + salt + '$' + hashlib.pbkdf2_hmac('SHA512', passwd, salt, 100000))
+    salt = 0
+    passwd = 0
+    fileobj.flush()
+    fileobj.close()
