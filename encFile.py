@@ -10,7 +10,7 @@ import base64
 # File encryption python
 
 # Global Vars
-storage_file = "stroage.enc"
+storage_file = "storage.enc"
 # 0 is linux 1 is windows
 os_version = 0
 # Username of person
@@ -78,7 +78,7 @@ def current_key(currentkey):
 
 # Get key from provided line - recommended to store key in encrypted form until it is needed
 def obtain_key(line):
-    return decrypt(os.getcwd, line)
+    return decrypt(line)
 
 
 # Create key for file - temporary key generation method
