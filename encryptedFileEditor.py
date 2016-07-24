@@ -44,7 +44,7 @@ def add_user(identifier, data):
 
 
 # Returns encoded_info
-def get_encoded_info(identifier):
+def get_user_info(identifier):
     return encFile.decrypt(decrypted_list.get(identifier))
 
 
