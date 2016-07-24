@@ -39,14 +39,14 @@ class UACC:
 
 #This tostring prints out the information that it has.
     def tostring(self):
-        return self.identifier, self.username, self.password
+        return self.identifier + " " + self.username + " " + self.password
 
 
 #Below is test code to test if class is working
 def main():
-    user1 = UACC("", "", "")
+    user1 = UACC("IDENTIFICATIONHERE", "USERNAMEHERE", "PASSWORDHERE")
     UACC.username_is_valid(user1)
-    UACC.tostring(user1)
+    print UACC.tostring(user1)
 
 
 if __name__ == "__main__":
