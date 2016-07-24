@@ -17,3 +17,7 @@ THIS MEANS NO UNRELATED VARIABLE NAMES, LOTS OF COMMENTS, AND NEAT CODE.
     * Implemented functions to get input from the user
     * Made it so that when a user enters a password it won't be shown in the terminal
     * Created functions to authenticate user and also create a new password for authentication
+    
+# To Be Completed
+* Implement updating account credentials
+* Implement removing an account 
