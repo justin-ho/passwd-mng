@@ -9,6 +9,11 @@ THIS MEANS NO UNRELATED VARIABLE NAMES, LOTS OF COMMENTS, AND NEAT CODE.
 # Brandon
 
 # Elliot
+* Implemented encryption (encFile.py)
+    * Creates UID for file
+    * Handles data encoding
+* Implemented file read/write (fileManipulation.py)
+* Implemented module to handle file encryption using both python files (encryptedFileEditor.py)
 
 # Justin 
 * Implemented UI (pass-mgr.py)
