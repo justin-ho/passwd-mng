@@ -6,22 +6,21 @@ import hashlib
 import os
 
 
-def quit_m(message):
-    """Print the message, then quit the program"""
-    print message
-    sys.exit(2)
-
-
 def check_passwd(passwd):
     """Checks the validity of the password with the password file"""
+    # open the file object
     fileobj = open('.eta', 'rb')
+    # split the elements by the $ delimeter
     elements = fileobj.read().split('$')
     try:
+        # verify the users password hash with the stored password hash
         if hashlib.pbkdf2_hmac('SHA512', passwd, elements[1], 100000) != elements[2]:
             return False
     finally:
+        # flush and close the file object stream
         fileobj.flush()
         fileobj.close()
+        # write over the data held in the elements list
         elements[1] = 0
         elements[2] = 0
     return True
@@ -67,6 +66,7 @@ def get_passwd():
 
 
 def print_splash():
+    """Prints a banner to the screen"""
     fileobj = open('banner.ascii', 'r')
     print fileobj.read()
     fileobj.close()
@@ -74,11 +74,15 @@ def print_splash():
 
 def new_passwd(passwd='+35+Pass()'):
     """Creates a new password for authentication"""
+    # open the file object for writing
     fileobj = open('.eta', 'wb')
+    # obtain the salt
     salt = os.urandom(16)
     while salt.find('$') != -1:
         salt = os.urandom(16)
+    # write the salt +  the password hash to the file
     fileobj.write('$' + salt + '$' + hashlib.pbkdf2_hmac('SHA512', passwd, salt, 100000))
+    # flush and close the file stream, and write over the salt and the password variables
     salt = 0
     passwd = 0
     fileobj.flush()
