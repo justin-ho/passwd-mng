@@ -2,3 +2,5 @@
 *.pyc
 __init__.py
 .eta
+_linux
+*.xml
