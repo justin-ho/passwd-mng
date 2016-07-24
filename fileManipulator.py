@@ -24,7 +24,7 @@ def read_file():
 # reads file before writing to confirm that it is not appending or reading the wrong file.
 def write_file():
     length = read_file()
-    with open(storage_file, "a") as openedFile:
+    with open(storage_file, "r+") as openedFile:
         for i in range(length + 1, len(encoded_info) + 2):
             if encoded_info.has_key(i):
                 openedFile.write(encoded_info.get(i))
@@ -41,9 +41,3 @@ def add_information(data):
 
 # Removing information
 # def remove_information(key):
-
-
-
-# Returns encoded_info
-def get_encoded_info():
-    return encoded_info
