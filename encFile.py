@@ -20,7 +20,7 @@ encrypted_key = ""
 
 
 # Check that file exists
-def check():
+def check_file_creation():
     global os_version
     path = os.getcwd()
     # Check for windows
@@ -55,6 +55,7 @@ def verify(verify_id):
         exit()
 
 
+
 # Verify unique ID
 def id_verify(check_id):
     return id_create() is check_id
@@ -78,7 +79,7 @@ def current_key(currentkey):
 
 # Get key from provided line - recommended to store key in encrypted form until it is needed
 def obtain_key(line):
-    return decrypt(line)
+    return decrypt(os.path, line)
 
 
 # Create key for file - temporary key generation method
@@ -105,8 +106,7 @@ def unpad(s):
 
 
 # Encrypt information
-def encrypt(raw):
-    key = encrypted_key
+def encrypt(key, raw):
     raw = pad(raw)
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CBC, iv)
@@ -114,8 +114,7 @@ def encrypt(raw):
 
 
 # Decrypt information
-def decrypt(enc):
-    key = encrypted_key
+def decrypt(key, enc):
     enc = base64.b64decode(enc)
     iv = enc[:16]
     cipher = AES.new(key, AES.MODE_CBC, iv)

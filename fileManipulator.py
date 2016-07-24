@@ -19,6 +19,7 @@ def read_file():
             count += 1
     return count + 1
 
+
 # Appends current file with new information
 # reads file before writing to confirm that it is not appending or reading the wrong file.
 def write_file():
@@ -36,6 +37,11 @@ def add_information(data):
     count += 1 # Since we are using 0 as the first index value
     data = str(data)
     encoded_info.update({count + 1, data})
+
+
+# Removing information
+# def remove_information(key):
+
 
 
 # Returns encoded_info
