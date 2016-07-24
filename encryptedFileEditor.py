@@ -15,7 +15,7 @@ element_count = 0
 
 # Initialization of encrypted file
 def init():
-    global encrypted_key, element_count
+    global encrypted_key, element_count, decrypted_list
     encFile.check_file_creation()
     element_count = fileManipulator.read_file()
     if element_count == 0:
