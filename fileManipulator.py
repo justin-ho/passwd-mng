@@ -9,10 +9,11 @@ import encFile
 storage_file = "storage.enc"
 encoded_info = {}
 
+
 # Reads file - returns the count of elements
 def read_file():
     count = 0
-    encFile.check()
+    encFile.check_file_creation()
     with open(storage_file) as openedFile:
         for line in openedFile:
             encoded_info.update({count, line})

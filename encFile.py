@@ -1,5 +1,8 @@
 import os
-import pwd
+try:
+    import pwd
+except: ImportError
+
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -24,7 +27,7 @@ def check_file_creation():
     global os_version
     path = os.getcwd()
     # Check for windows
-    if path.find(":\\"):
+    if path.find(":\\") != -1:
         openfile = open(path + "\\" + storage_file, "wb")
         openfile.close()
         os_version = 1
@@ -115,6 +118,8 @@ def encrypt(key, raw):
 
 # Decrypt information
 def decrypt(key, enc):
+    if enc is None:
+        return ""
     enc = base64.b64decode(enc)
     iv = enc[:16]
     cipher = AES.new(key, AES.MODE_CBC, iv)
