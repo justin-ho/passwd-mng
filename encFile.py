@@ -24,7 +24,7 @@ def check_file_creation():
     global os_version
     path = os.getcwd()
     # Check for windows
-    if path.find(":\\"):
+    if path.find(":\\") != -1:
         openfile = open(path + "\\" + storage_file, "wb")
         openfile.close()
         os_version = 1
