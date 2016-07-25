@@ -27,3 +27,4 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 # To Be Completed
 * Implement updating account credentials
 * Implement removing an account
+* Fix Windows bugs (currently the application only seems to work in linux)
