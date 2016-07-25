@@ -115,7 +115,7 @@ def encrypt(key, raw):
 
 # Decrypt information
 def decrypt(key, enc):
-    if enc == "":
+    if enc is None:
         return ""
     enc = base64.b64decode(enc)
     iv = enc[:16]
