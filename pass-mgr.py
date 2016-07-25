@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import utils
-import UACC_Class
+from UACC_Class import UACC
 import encryptedFileEditor
 import os
 
@@ -15,7 +15,7 @@ def main():
         utils.authenticate()
     else:
         utils.new_passwd(utils.get_passwd())
-#add init here
+    # add init here
     encryptedFileEditor.init()
     # Menu that the user will see
     menu = '\nWhat would you like to do?\n\n' \
@@ -41,26 +41,23 @@ def main():
         # Perform the action based on the users choice
         if user_option == '1':
             print '********Add Credentials********'
-            #add uacc object and pass to elliot
-            identifiercheck = utils.get_identifier()
-            usernamecheck = utils.get_username()
-            passwordcheck = utils.get_passwd()
-            userinformation = UACC_Class.UACC(identifiercheck, usernamecheck, passwordcheck)
-            if(UACC_Class.UACC.identifier_is_valid(identifiercheck) == True):
-                if(UACC_Class.Uacc.username_is_valid(usernamecheck)):
-                    if(UACC_Class.UACC.password_is_valid(passwordcheck)):
-                        encryptedFileEditor.add_user(identifiercheck, UACC_Class.Uacc.tostring(userinformation))
+            # add uacc object and pass to elliot
+            user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
+            if user_account.identifier_is_valid():
+                if user_account.username_is_valid():
+                    if user_account.password_is_valid():
+                        encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
                     else:
                         print "Does not meet requirements. Make sure it is 8-16 characters long, and no whitespace"
                 else:
-                    print "Does not meet requirements. Make sure it has less than 16 characters, no whitespace, and is not blank"
+                    print "Does not meet requirements. " \
+                          "Make sure it has less than 16 characters, no whitespace, and is not blank"
             else:
                 "Does not meet requirements. Make sure it has no digits, white space, and is not blank. "
         elif user_option == '2':
             print '********Get Credentials********'
             # Use the identifier to get the username and password for the authenticated user
-            getidentifier = utils.get_identifier()
-            encryptedFileEditor.get_user_info(getidentifier)
+            encryptedFileEditor.get_user_info(utils.get_identifier())
 
         elif user_option == '3':
             print '********Update Credentials********'
