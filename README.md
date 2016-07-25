@@ -6,6 +6,10 @@ Please include a README.txt file that briefly explains who did what, and anythin
 Think of this as your extreme beta version. Also, PLEASE USE GOOD SOFTWARE DEVELOPMENT TECHNIQUES. 
 THIS MEANS NO UNRELATED VARIABLE NAMES, LOTS OF COMMENTS, AND NEAT CODE.
 
+# Recommended Setup
+Installation of PyCrypto 2.6.1 is required for the usage. We recommend installing PyCrypto with pip (pip install pycrypto). We have provided the installation source files in case there are any problems. To install, run the setup.py file.
+
+
 # Brandon
 
 # Elliot
