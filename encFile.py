@@ -8,6 +8,7 @@ from Crypto.Cipher import AES
 from Crypto import Random
 import os.path
 import time
+import sys
 import base64
 
 # File encryption python
@@ -28,13 +29,27 @@ def check_file_creation():
     path = os.getcwd()
     # Check for windows
     if path.find(":\\") != -1:
-        openfile = open(path + "\\" + storage_file, "wb")
-        openfile.close()
+        if not os.path.isfile(storage_file):
+            openfile = open(path + "\\" + storage_file, "wb")
+            id = id_create()
+            openfile.write(id)
+            openfile.write("\n")
+            key = create_key()
+            openfile.write(key)
+            openfile.write("\n")
+            openfile.close()
         os_version = 1
     # Linux
     else:
-        openfile = open("./" + storage_file, "wb")
-        openfile.close()
+        if not os.path.isfile(storage_file):
+            openfile = open("./" + storage_file, "wb")
+            id = id_create()
+            openfile.write(id)
+            openfile.write("\n")
+            key = create_key()
+            openfile.write(key)
+            openfile.write("\n")
+            openfile.close()
 
 
 # Get username
@@ -48,6 +63,8 @@ def get_username():
     # Linux
     else:
         username = pwd.getpwuid(os.getuid()).pw_name
+    return username
+
 
 
 # Verify that the file is correct by submitting the verify id from the file
@@ -69,7 +86,7 @@ def id_create():
     get_username()
     newhash = SHA256.new()
     newhash.update(username + os.getcwd())
-    newid = newhash.digest
+    newid = newhash.digest()
     return newid
 
 
@@ -90,8 +107,8 @@ def create_key():
     # Python time code from http://stackoverflow.com/questions/35318841/python-how-to-get-location-time-in-windows
     utc_offset = time.strftime('%z')
     tz_name = time.tzname[0]
-    current_key(encrypt(os.getcwd(), get_username() + os.getcwd() + tz_name + utc_offset))
-    return encrypt(os.getcwd(), get_username() + os.getcwd() + tz_name + utc_offset) # May not be needed
+    current_key(encrypt(os.getcwd(), username + os.getcwd()))
+    return encrypt(os.getcwd(), username + os.getcwd()) # May not be needed
 
 
 # Encryption from http://stackoverflow.com/questions/12524994/encrypt-decrypt-using-pycrypto-aes-256
@@ -111,8 +128,11 @@ def unpad(s):
 # Encrypt information
 def encrypt(key, raw):
     raw = pad(raw)
+    key1 = key[:32]
+    key2 = key1.encode("ASCII", 'ignore')
+    key3 = key2[:32]
     iv = Random.new().read(AES.block_size)
-    cipher = AES.new(key, AES.MODE_CBC, iv)
+    cipher = AES.new(key3, AES.MODE_CBC, iv)
     return base64.b64encode(iv + cipher.encrypt(raw))
 
 
@@ -121,6 +141,9 @@ def decrypt(key, enc):
     if enc is None:
         return ""
     enc = base64.b64decode(enc)
+    key1 = key[:32]
+    key2 = key1.encode("ASCII", 'ignore')
+    key3 = key2[:32]
     iv = enc[:16]
-    cipher = AES.new(key, AES.MODE_CBC, iv)
+    cipher = AES.new(key3, AES.MODE_CBC, iv)
     return unpad(cipher.decrypt(enc[16:]))
