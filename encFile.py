@@ -1,5 +1,8 @@
 import os
-import pwd
+try:
+    import pwd
+except: ImportError
+
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 from Crypto import Random
