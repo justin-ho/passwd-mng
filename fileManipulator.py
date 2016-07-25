@@ -16,7 +16,7 @@ def read_file():
     encFile.check_file_creation()
     with open(storage_file) as openedFile:
         for line in openedFile:
-            encoded_info.update(count, line)
+            encoded_info.update({count, line})
             count += 1
     return count + 1
 

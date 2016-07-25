@@ -32,10 +32,10 @@ def init():
             encrypted_info = fileManipulator.encoded_info.get(index)
             decrypted_info = encFile.decrypt(encFile.decrypt(os.getcwd(), encrypted_key), encrypted_info)
             if index == 0:
-                decrypted_list.update("-key-", encrypted_info)
+                decrypted_list.update({"-key-", encrypted_info})
             else:
                 decrypted_info_list = str(decrypted_info).split(" ")
-                decrypted_list.update(decrypted_info_list[0], encrypted_info)
+                decrypted_list.update({decrypted_info_list[0], encrypted_info})
             decrypted_info_list = "" # Extraneous setting to prevent reading from memory
 
 
