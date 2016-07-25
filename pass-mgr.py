@@ -57,8 +57,16 @@ def main():
         elif user_option == '2':
             print '********Get Credentials********'
             # Use the identifier to get the username and password for the authenticated user
-            encryptedFileEditor.get_user_info(utils.get_identifier())
 
+            user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
+            user_array = user_info.split(" ")
+            user_info = ""
+            user_array[0] = ""
+            print ""
+            print "Username: ", user_array[1]
+            user_array[1] = ""
+            print "Password: ", user_array[2]
+            user_array[2] = ""
         elif user_option == '3':
             print '********Update Credentials********'
             # Use the identifier and update the username and password for that identifier

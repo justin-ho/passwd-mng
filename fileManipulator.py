@@ -26,8 +26,10 @@ def read_file():
 def write_file():
     length = read_file()
     with open(storage_file, "r+") as openedFile:
-        for i in range(length + 1, len(encoded_info) + 2):
+        openedFile.seek(0)
+        for i in range(0, len(encoded_info) + 1):
             if encoded_info.has_key(i):
+                print encoded_info.get(i)
                 openedFile.write(encoded_info.get(i))
 
 
@@ -36,9 +38,8 @@ def write_file():
 def add_information(data):
     count = len(encoded_info)
     count += 1 # Since we are using 0 as the first index value
-    data = str(data)
-    encoded_info.update({count + 1, data})
-
+    encoded_info.update({count: data})
+    print encoded_info.get(count)
 
 # Removing information
 # def remove_information(key):
