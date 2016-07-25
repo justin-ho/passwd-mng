@@ -115,6 +115,8 @@ def encrypt(key, raw):
 
 # Decrypt information
 def decrypt(key, enc):
+    if enc == "":
+        return ""
     enc = base64.b64decode(enc)
     iv = enc[:16]
     cipher = AES.new(key, AES.MODE_CBC, iv)
