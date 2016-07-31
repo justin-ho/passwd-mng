@@ -1,14 +1,15 @@
 import os
+
 try:
     import pwd
-except ImportError: """do nothing"""
+except ImportError:
+    pass
 
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 from Crypto import Random
 import os.path
 import time
-import sys
 import base64
 
 # File encryption python
@@ -27,6 +28,7 @@ encrypted_key = ""
 def check_file_creation():
     global os_version
     path = os.getcwd()
+    os_version = get_os()
     # Check for windows
     if path.find(":\\") != -1:
         if not os.path.isfile(storage_file):
@@ -52,9 +54,20 @@ def check_file_creation():
             openfile.close()
 
 
+# Get OS Type
+def get_os():
+    global os_version
+    path = os.getcwd()
+    # Check for windows
+    if path.find(":\\") != -1:
+        os_version = 1
+    return os_version
+
+
 # Get username
 def get_username():
     global username
+    get_os()
     # Windows
     if os_version == 1:
         path = os.path.join(os.path.expandvars("%userprofile%"), "Documents and Settings")
@@ -66,14 +79,12 @@ def get_username():
     return username
 
 
-
 # Verify that the file is correct by submitting the verify id from the file
 def verify(verify_id):
     result = id_verify(verify_id)
     if not result:
         print "ERROR: INVALID FILE"
         exit()
-
 
 
 # Verify unique ID
@@ -90,16 +101,23 @@ def id_create():
     return newid
 
 
+# Debugger print function
+def debugger():
+    print username
+
+
 # Store encrypted key as global var
 def current_key(currentkey):
     global encrypted_key
     encrypted_key = currentkey
 
 
-
 # Get key from provided line - recommended to store key in encrypted form until it is needed
 def obtain_key(line):
-    return decrypt(os.path, line)
+    key = os.getcwd() + get_username()
+    while len(key) < 32:
+        key += os.getcwd() + get_username()
+    return decrypt(key[:32], line)
 
 
 # Create key for file - temporary key generation method
@@ -107,8 +125,11 @@ def create_key():
     # Python time code from http://stackoverflow.com/questions/35318841/python-how-to-get-location-time-in-windows
     utc_offset = time.strftime('%z')
     tz_name = time.tzname[0]
-    current_key(encrypt(os.getcwd(), username + os.getcwd()))
-    return encrypt(os.getcwd(), username + os.getcwd()) # May not be needed
+    key = os.getcwd() + get_username()
+    while len(key) < 32:
+        key += os.getcwd() + get_username()
+    current_key(encrypt(key[:32], username + os.getcwd()))
+    return encrypt(key[:32], username + os.getcwd())  # May not be needed
 
 
 # Encryption from http://stackoverflow.com/questions/12524994/encrypt-decrypt-using-pycrypto-aes-256
@@ -122,7 +143,7 @@ def pad(s):
 
 # Unpadding
 def unpad(s):
-    return s[:-ord(s[len(s)-1:])]
+    return s[:-ord(s[len(s) - 1:])]
 
 
 # Encrypt information
