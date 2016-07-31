@@ -57,7 +57,7 @@ def main():
                           "- No whitespace\n" \
                           "- Is not blank\n"
             else:
-                "Identifier does not meet requirements. Make sure it has:\n"\
+                print "Identifier does not meet requirements. Make sure it has:\n"\
                 "- No digits\n"\
                 "- No white space\n"\
                 "- Is not blank. \n"
