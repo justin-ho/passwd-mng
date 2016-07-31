@@ -1,10 +1,9 @@
 #!/usr/bin/python
 
-import sys
 import getpass
 import hashlib
 import os
-import authenticateException
+from authenticateException import authenticationError
 
 
 def check_passwd(passwd):
@@ -43,7 +42,7 @@ def authenticate():
         else:
             print auth_message + ' Attempt ' + str(count + 1) + ' of 3'
             if count == 2:
-                raise authenticateException
+                raise authenticationError("[ERROR] Failed to authenticate. Max amount of tries reached.")
                 #sys.exit(2)
 
 
