@@ -43,9 +43,9 @@ def main():
             print '********Add Credentials********'
             # add uacc object and pass to elliot
             user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
-            if user_account.identifier_is_valid() == True:
-                if user_account.username_is_valid() == True:
-                    if user_account.password_is_valid() == True:
+            if user_account.identifier_is_valid():
+                if user_account.username_is_valid():
+                    if user_account.password_is_valid():
                         encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
                     else:
                         print "Password does not meet requirements. Make sure it has:\n" \

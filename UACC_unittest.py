@@ -37,7 +37,12 @@ exactly16_password = UACC_Class.UACC("Python","TeamETA", "sixteencharacter")
 exaclty8_password = UACC_Class.UACC("Python","TeamETA", "haseight")
 whitespace_password = UACC_Class.UACC("Python","TeamETA", "Contains Whitespace")
 
-#Below are extra test cases
+#Below is the tostring function:
+    #Requirements for tostirng functions:
+        #returns the identifier, username, and password in one line, seperated with spaces
+        #e.g input("python","TeamETA","Password")  -> returns: "python TeamETA Password"
+extratest = UACC_Class.UACC("Python","TeamETA","Password")
+tostringtest = UACC_Class.UACC.tostring(extratest)
 
 
 # Created a Username class
@@ -88,6 +93,10 @@ class TestUACC(unittest.TestCase):
     def test_password_whitespace(self):
         passwordtest5 = UACC_Class.UACC.password_is_valid(whitespace_password)
         self.assertFalse(passwordtest5)
+
+    # ToString test
+    def tostringtest(self):
+        self.assertEquals("Python TeamETA Password", tostringtest)
 
 if __name__ == "__main__":
     unittest.main()
