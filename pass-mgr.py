@@ -48,12 +48,19 @@ def main():
                     if user_account.password_is_valid():
                         encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
                     else:
-                        print "Does not meet requirements. Make sure it is 8-16 characters long, and no whitespace"
+                        print "Password does not meet requirements. Make sure it has:\n" \
+                              "- 8-16 characters long\n"\
+                              "- No whitespace\n"
                 else:
-                    print "Does not meet requirements. " \
-                          "Make sure it has less than 16 characters, no whitespace, and is not blank"
+                    print "Username does not meet requirements. Make sure it has:\n" \
+                          "- Less than 16 characters\n" \
+                          "- No whitespace\n" \
+                          "- Is not blank\n"
             else:
-                "Does not meet requirements. Make sure it has no digits, white space, and is not blank. "
+                print "Identifier does not meet requirements. Make sure it has:\n"\
+                "- No digits\n"\
+                "- No white space\n"\
+                "- Is not blank. \n"
         elif user_option == '2':
             print '********Get Credentials********'
             # Use the identifier to get the username and password for the authenticated user

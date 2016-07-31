@@ -1,7 +1,6 @@
 # imports regular expressions
 import re
 
-
 # Created a Username class
 class UACC:
 
@@ -33,7 +32,7 @@ class UACC:
             # len(username) checks the length of the input
 
     def username_is_valid(self):
-        if not self.username or len(self.username) > 16 or re.search(r'[\s]', self.username):
+        if (not self.username or len(self.username) > 16 or re.search(r'[\s]', self.username)):
             return False
         else:
             return True
@@ -42,7 +41,7 @@ class UACC:
             # Password must not be: blank and no longer than 16 characters long and not shorter than 8 characters long
 
     def password_is_valid(self):
-        if len(self.password) > 16 or len(self.password) < 8 or re.search(r'[\s]', self.password):
+        if (len(self.password) > 16 or len(self.password) < 8 or re.search(r'[\s]', self.password)):
             return False
         else:
             return True
