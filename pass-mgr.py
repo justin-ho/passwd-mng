@@ -62,12 +62,15 @@ def main():
                 user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
                 user_array = user_info.split(" ")
                 user_info = ""
-                user_array[0] = ""
-                print ""
-                print "Username: ", user_array[1]
-                user_array[1] = ""
-                print "Password: ", user_array[2]
-                user_array[2] = ""
+                if len(user_array) == 3:
+                    user_array[0] = ""
+                    print ""
+                    print "Username: ", user_array[1]
+                    user_array[1] = ""
+                    print "Password: ", user_array[2]
+                    user_array[2] = ""
+                else:
+                    print "Identifier not found."
             elif user_option == '3':
                 print '********Update Credentials********'
                 # Use the identifier and update the username and password for that identifier
