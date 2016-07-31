@@ -4,6 +4,7 @@ import utils
 from UACC_Class import UACC
 import encryptedFileEditor
 import os
+from authenticateException import authenticationError
 
 
 def main():
@@ -88,6 +89,8 @@ def main():
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
                 utils.get_identifier()
+    except authenticationError:
+        print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except KeyboardInterrupt:
         print "\nDetected Keyboard Interrupt, Quitting pass-mgr..."
     finally:
