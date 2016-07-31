@@ -24,6 +24,9 @@ def init():
     # else:
     id = fileManipulator.encoded_info.get(0)
     encrypted_key = fileManipulator.encoded_info.get(1)
+    if encrypted_key is None:
+        print "ERROR: PROBLEM WITH KEY"
+        exit(1)
     encFile.id_verify(id)
     if element_count == 1:
         fileManipulator.add_information(encFile.encrypt(encFile.decrypt(os.getcwd(), encrypted_key), encrypted_key))
