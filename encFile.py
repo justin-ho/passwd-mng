@@ -118,9 +118,9 @@ def current_key(currentkey):
 
 # Get key from provided line - recommended to store key in encrypted form until it is needed
 def obtain_key(line):
-	key = os.getcwd()
+	key = os.getcwd() + get_username()
 	while len(key) < 32:
-		key += os.getcwd()
+		key += os.getcwd() + get_username()
 	return decrypt(key[:32], line)
 
 
@@ -129,9 +129,9 @@ def create_key():
 	# Python time code from http://stackoverflow.com/questions/35318841/python-how-to-get-location-time-in-windows
 	utc_offset = time.strftime('%z')
 	tz_name = time.tzname[0]
-	key = os.getcwd()
+	key = os.getcwd() + get_username()
 	while len(key) < 32:
-		key += os.getcwd()
+		key += os.getcwd() + get_username()
 	current_key(encrypt(key[:32], username + os.getcwd()))
 	return encrypt(key[:32], username + os.getcwd()) # May not be needed
 

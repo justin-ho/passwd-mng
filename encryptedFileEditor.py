@@ -29,11 +29,7 @@ def init():
 		exit(1)
 	encFile.id_verify(id)
 	if element_count == 1:
-		key = os.getcwd()
-		while len(key) < 32:
-			key += os.getcwd()
-		fileManipulator.add_information(encFile.encrypt(encFile.decrypt(key[:32], encrypted_key), encrypted_key))
-		del key
+		fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), encrypted_key))
 		fileManipulator.write_file()
 	else:
 		for index in range(0, element_count + 1):
@@ -43,11 +39,7 @@ def init():
 			elif index == 1:
 				decrypted_list.update({"-key-": encrypted_info})
 			else:
-				key = os.getcwd()
-				while len(key) < 32:
-					key += os.getcwd()
-				decrypted_info = encFile.decrypt(encFile.decrypt(key[:32], encrypted_key), encrypted_info)
-				del key
+				decrypted_info = encFile.decrypt(encFile.obtain_key(encrypted_key), encrypted_info)
 				decrypted_info_list = str(decrypted_info).split(" ")
 				decrypted_list.update({decrypted_info_list[0]: encrypted_info})
 			decrypted_info_list = "" # Extraneous setting to prevent reading from memory
@@ -55,21 +47,14 @@ def init():
 
 # Add user information to the file
 def add_user(identifier, data):
-	key = os.getcwd()
-	while len(key) < 32:
-		key += os.getcwd()
-	decrypted_list.update({identifier: encFile.encrypt(encFile.decrypt(key[:32], encrypted_key), data)})
-	fileManipulator.add_information(encFile.encrypt(encFile.decrypt(key[:32], encrypted_key), data))
-	del key
+	decrypted_list.update({identifier: encFile.encrypt(encFile.obtain_key(encrypted_key), data)})
+	fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), data))
 	fileManipulator.write_file()
 
 
 # Returns encoded_info
 def get_user_info(identifier):
-	key = os.getcwd()
-	while len(key) < 32:
-		key += os.getcwd()
-	return encFile.decrypt(encFile.decrypt(key[:32], encrypted_key), decrypted_list.get(identifier))
+	return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier))
 
 
 
