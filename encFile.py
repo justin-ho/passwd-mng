@@ -1,7 +1,8 @@
 import os
 try:
     import pwd
-except: ImportError
+except ImportError:
+    """Do Nothing"""
 
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
