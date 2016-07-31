@@ -36,10 +36,13 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 * Created Unit testing for encFile.py
 
 # Justin 
-* Things done for this sprint
+* Create unit tests for utils.py
+* Fixed issue #11 array size check
+* Fixed issue #15 catching keyboard interrupts 
 
 
 # To Be Completed
 * Implement updating account credentials
 * Implement removing an account
-* Fix Windows bugs (currently the application only seems to work in linux)
+* New key generation implementation
+* UI Output Improvements
