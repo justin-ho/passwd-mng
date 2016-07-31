@@ -65,7 +65,7 @@ def main():
                     "- Is not blank. \n"
             elif user_option == '2':
                 print '********Get Credentials********'
-            # Use the identifier to get the username and password for the authenticated user
+                # Use the identifier to get the username and password for the authenticated user
                 user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
                 user_array = user_info.split(" ")
                 user_info = ""
@@ -91,8 +91,10 @@ def main():
                 utils.get_identifier()
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
-
-    print "Have a nice day!"
+    except KeyboardInterrupt:
+        print "\nDetected Keyboard Interrupt, Quitting pass-mgr..."
+    finally:
+        print "Have a nice day!"
 
 
 if __name__ == "__main__":
