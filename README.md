@@ -8,6 +8,8 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 # Brandon
 * Implemented UACC class
 * Integrated the UI with the rest of the modules
+* Implemented UACC_unittest file
+   *Runs test that use the UACC_Class to make sure it returns what we want it to return.  
 
 # Elliot
 * Implemented encryption (encFile.py)
