@@ -4,6 +4,7 @@ import sys
 import getpass
 import hashlib
 import os
+import authenticateException
 
 
 def check_passwd(passwd):
@@ -42,7 +43,8 @@ def authenticate():
         else:
             print auth_message + ' Attempt ' + str(count + 1) + ' of 3'
             if count == 2:
-                sys.exit(2)
+                raise authenticateException
+                #sys.exit(2)
 
 
 def get_identifier():
