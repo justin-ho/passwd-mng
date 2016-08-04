@@ -5,12 +5,9 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
-import msvcrt as m
 
 
 def main():
-    def wait():
-        m.getch()
     """User interface for the Password manager"""
     utils.print_splash()
     try:
@@ -81,8 +78,14 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
-                print "Press any key to continue..."
-                wait()
+                            
+                path = os.getcwd()
+                if path.find(":\\") != -1:
+                    os.system("pause")
+                else:
+                    os.system('read -s -n 1 -p "Press any key to continue..."')
+                    print
+                #print "Press any key to continue..."
 
 
             elif user_option == '2':
@@ -101,7 +104,7 @@ def main():
                 else:
                     print "Identifier not found."
                 print "\nPress any key to continue..."
-                wait()
+
 
             elif user_option == '3':
                 print '********Update Credentials********'
@@ -117,7 +120,7 @@ def main():
                 # Use the identifier and remove the credentials from the datastore
                 utils.get_identifier()
                 print "\nPress any key to continue..."
-                wait()
+
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except KeyboardInterrupt:
