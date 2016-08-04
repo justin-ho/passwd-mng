@@ -19,6 +19,7 @@ def main():
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
+        path = os.getcwd()
         # Menu that the user will see
         menu = '\nWhat would you like to do?\n\n' \
                '1. Add Credentials\n' \
@@ -78,9 +79,9 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
-                            
-                path = os.getcwd()
-                if path.find(":\\") != -1:
+
+
+                if path.find(":\\"):
                     os.system("pause")
                 else:
                     os.system('read -s -n 1 -p "Press any key to continue..."')
@@ -103,7 +104,12 @@ def main():
                     user_array[2] = ""
                 else:
                     print "Identifier not found."
-                print "\nPress any key to continue..."
+                if path.find(":\\") != -1:
+                    os.system("pause")
+                else:
+                    os.system('read -s -n 1 -p "Press any key to continue..."')
+                    print
+                #print "\nPress any key to continue..."
 
 
             elif user_option == '3':
