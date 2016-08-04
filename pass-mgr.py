@@ -70,12 +70,10 @@ def main():
                 user_array = user_info.split(" ")
                 del user_info
                 if len(user_array) == 3:
-                    del user_array[0]
                     print ""
                     print "Username: ", user_array[1]
-                    del user_array[1]
                     print "Password: ", user_array[2]
-                    del user_array[2]
+                    del user_array
                 else:
                     print "Identifier not found."
             elif user_option == '3':

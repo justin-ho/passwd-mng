@@ -42,7 +42,7 @@ def init():
                 decrypted_info = encFile.decrypt(encFile.obtain_key(encrypted_key), encrypted_info)
                 decrypted_info_list = str(decrypted_info).split(" ")
                 decrypted_list.update({decrypted_info_list[0]: encrypted_info})
-            del decrypted_info_list # prevent reading from memory
+                del decrypted_info_list # prevent reading from memory
 
 
 # Add user information to the file

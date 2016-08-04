@@ -21,8 +21,8 @@ def check_passwd(passwd):
         fileobj.flush()
         fileobj.close()
         # write over the data held in the elements list
-        del elements[1]
-        del elements[2]
+        del elements
+
     return True
 
 
