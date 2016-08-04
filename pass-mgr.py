@@ -5,9 +5,12 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
+import msvcrt as m
 
 
 def main():
+    def wait():
+        m.getch()
     """User interface for the Password manager"""
     utils.print_splash()
     try:
@@ -45,9 +48,11 @@ def main():
                 print '********Add Credentials********'
                 # add uacc object and pass to elliot
                 user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
+                print "\n"
                 if user_account.identifier_is_valid():
                     if user_account.username_is_valid():
                         if user_account.password_is_valid():
+                            print "Added Credentials"
                             encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
                         else:
                             print "Password does not meet requirements. Make sure it has:\n" \
@@ -58,11 +63,28 @@ def main():
                               "- Less than 16 characters\n" \
                               "- No whitespace\n" \
                               "- Is not blank\n"
+                        if user_account.password_is_valid() == False:
+                            print "Password does not meet requirements. Make sure it has:\n" \
+                                "- 8-16 characters long\n" \
+                                "- No whitespace\n"
                 else:
                     print "Identifier does not meet requirements. Make sure it has:\n"\
                     "- No digits\n"\
                     "- No white space\n"\
                     "- Is not blank. \n"
+                    if user_account.username_is_valid() == False:
+                        print "Username does not meet requirements. Make sure it has:\n" \
+                              "- Less than 16 characters\n" \
+                              "- No whitespace\n" \
+                              "- Is not blank\n"
+                        if user_account.password_is_valid() == False:
+                            print "Password does not meet requirements. Make sure it has:\n" \
+                                  "- 8-16 characters long\n" \
+                                  "- No whitespace\n"
+                print "Press any key to continue..."
+                wait()
+
+
             elif user_option == '2':
                 print '********Get Credentials********'
                 # Use the identifier to get the username and password for the authenticated user
@@ -78,6 +100,9 @@ def main():
                     user_array[2] = ""
                 else:
                     print "Identifier not found."
+                print "\n Press any key to continue..."
+                wait()
+
             elif user_option == '3':
                 print '********Update Credentials********'
                 # Use the identifier and update the username and password for that identifier
