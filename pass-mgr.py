@@ -90,13 +90,21 @@ def main():
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
                 identifier = utils.get_identifier()
+                user_account = UACC(identifier, '', '')
                 try:
-                    encryptedFileEditor.remove_user(identifier)
+                    if user_account.identifier_is_valid():
+                        encryptedFileEditor.remove_user(identifier)
+                    else:
+                        print "Identifier does not meet requirements. Make sure it has:\n" \
+                              "- No digits\n" \
+                              "- No white space\n" \
+                              "- Is not blank. \n"
                 except UserAccountNotFoundError:
                     print '[WARNING] User account could not be found using identifier: \"' + identifier + \
-                        '\" skipping removal.'
+                      '\" skipping removal.'
                 finally:
                     del identifier
+                    del user_account
 
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
