@@ -5,6 +5,7 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
+from userAccountException import UserAccountNotFoundError
 
 
 def main():
@@ -88,7 +89,15 @@ def main():
             elif user_option == '4':
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
-                utils.get_identifier()
+                identifier = utils.get_identifier()
+                try:
+                    encryptedFileEditor.remove_user(identifier)
+                except UserAccountNotFoundError:
+                    print '[WARNING] User account could not be found using identifier: \"' + identifier + \
+                        '\" skipping removal.'
+                finally:
+                    del identifier
+
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except (KeyboardInterrupt, EOFError):

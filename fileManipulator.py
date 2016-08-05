@@ -1,5 +1,3 @@
-import os
-import os.path
 import encFile
 
 # File writer/reader
@@ -39,5 +37,7 @@ def add_information(data):
     count += 1 # Since we are using 0 as the first index value
     encoded_info.update({count: data})
 
+
 # Removing information
-# def remove_information(key):
+def remove_information(key):
+    del encoded_info[key]
