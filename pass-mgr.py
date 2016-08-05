@@ -91,7 +91,7 @@ def main():
                 utils.get_identifier()
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         print "\nDetected Keyboard Interrupt, Quitting pass-mgr..."
     finally:
         print "Have a nice day!"
