@@ -15,7 +15,7 @@ def main():
             # Get the password from the user
             utils.authenticate()
         else:
-            print "Welcome to ETA Password Manager! Please enter a password you want to use to access your account."
+            print 'Welcome to ETA Password Manager! Please enter a password you want to use to access your account.'
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
@@ -45,7 +45,10 @@ def main():
             if user_option == '1':
                 print '********Add Credentials********'
                 # add uacc object and pass to elliot
-                user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
+                identifier = utils.get_identifier()
+                username =utils.get_username()
+                passwd = utils.get_passwd()
+                user_account = UACC(identifier,username, passwd)
                 print "\n"
                 if user_account.identifier_is_valid():
                     if user_account.username_is_valid():
@@ -79,6 +82,7 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
+                #cause a pause after running. 
                 raw_input("Press enter to continue...")
 
             elif user_option == '2':
