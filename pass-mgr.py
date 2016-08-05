@@ -15,6 +15,7 @@ def main():
             # Get the password from the user
             utils.authenticate()
         else:
+            print "Welcome to ETA Password Manager! Please enter a password you want to use to access your account."
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
@@ -30,7 +31,6 @@ def main():
         # user options
         options = ['1', '2', '3', '4', '5']
         user_option = 0
-        path = os.getcwd()
 
         # Run until the user quits the program
         while user_option != '5':
@@ -79,11 +79,7 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
-                if path.find(":\\"):
-                    os.system("pause")
-                else:
-                    os.system('read -s -n 1 -p "Press any key to continue..."')
-                    print
+                raw_input("Press enter to continue...")
 
             elif user_option == '2':
                 print '********Get Credentials********'
@@ -100,11 +96,8 @@ def main():
                     user_array[2] = ""
                 else:
                     print "Identifier not found."
-                if path.find(":\\"):
-                    os.system("pause")
-                else:
-                    os.system('read -s -n 1 -p "Press any key to continue..."')
-                    print
+                raw_input("Press enter to continue...")
+
 
             elif user_option == '3':
                 print '********Update Credentials********'
@@ -113,12 +106,14 @@ def main():
                 # Get the new username and password to update
                 utils.get_username()
                 utils.get_passwd()
-                print "\nPress any key to continue..."
+                raw_input("Press enter to continue...")
+
             elif user_option == '4':
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
                 utils.get_identifier()
-                print "\nPress any key to continue..."
+                raw_input("Press enter to continue...")
+
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except (KeyboardInterrupt, EOFError):
