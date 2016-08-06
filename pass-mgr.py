@@ -122,7 +122,7 @@ def main():
                     if new_useraccount.identifier_is_valid():
                         if new_useraccount.username_is_valid():
                             if new_useraccount.password_is_valid():
-                                print "Added New Credentials"
+                                print "Updated With New Credentials"
                                 user_array[0] = ""
                                 user_array[1] = new_username
                                 user_array[1] = ""

@@ -44,6 +44,12 @@ def add_information(data):
     encoded_info.update({count: data})
 
 
+# Takes in information to update encoded_info dictionary
+# -Assumes that data is encoded already
+def update_information(count, data):
+    encoded_info.update({count: data})
+
+
 # Removing information
 def remove_information(key):
     try:
