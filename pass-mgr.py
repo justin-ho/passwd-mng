@@ -6,6 +6,7 @@ import encryptedFileEditor
 import os
 from authenticateException import authenticationError
 
+
 def main():
     """User interface for the Password manager"""
     utils.print_splash()
@@ -82,7 +83,7 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
-                #cause a pause after running. 
+                # cause a pause after running.
                 raw_input("Press enter to continue...")
 
             elif user_option == '2':
@@ -99,7 +100,6 @@ def main():
                 else:
                     print "Identifier not found."
                 raw_input("Press enter to continue...")
-
 
             elif user_option == '3':
                 print '********Update Credentials********'
