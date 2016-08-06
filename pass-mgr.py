@@ -6,7 +6,6 @@ import encryptedFileEditor
 import os
 from authenticateException import authenticationError
 
-
 def main():
     """User interface for the Password manager"""
     utils.print_splash()
@@ -16,9 +15,11 @@ def main():
             # Get the password from the user
             utils.authenticate()
         else:
+            print 'Welcome to ETA Password Manager! Please enter a password you want to use to access your account.'
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
+        path = os.getcwd()
         # Menu that the user will see
         menu = '\nWhat would you like to do?\n\n' \
                '1. Add Credentials\n' \
@@ -44,10 +45,15 @@ def main():
             if user_option == '1':
                 print '********Add Credentials********'
                 # add uacc object and pass to elliot
-                user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
+                identifier = utils.get_identifier()
+                username =utils.get_username()
+                passwd = utils.get_passwd()
+                user_account = UACC(identifier,username, passwd)
+                print "\n"
                 if user_account.identifier_is_valid():
                     if user_account.username_is_valid():
                         if user_account.password_is_valid():
+                            print "Added Credentials"
                             encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
                         else:
                             print "Password does not meet requirements. Make sure it has:\n" \
@@ -58,11 +64,26 @@ def main():
                               "- Less than 16 characters\n" \
                               "- No whitespace\n" \
                               "- Is not blank\n"
+                        if user_account.password_is_valid() == False:
+                            print "Password does not meet requirements. Make sure it has:\n" \
+                                "- 8-16 characters long\n" \
+                                "- No whitespace\n"
                 else:
                     print "Identifier does not meet requirements. Make sure it has:\n"\
                     "- No digits\n"\
                     "- No white space\n"\
                     "- Is not blank. \n"
+                    if user_account.username_is_valid() == False:
+                        print "Username does not meet requirements. Make sure it has:\n" \
+                              "- Less than 16 characters\n" \
+                              "- No whitespace\n" \
+                              "- Is not blank\n"
+                        if user_account.password_is_valid() == False:
+                            print "Password does not meet requirements. Make sure it has:\n" \
+                                  "- 8-16 characters long\n" \
+                                  "- No whitespace\n"
+                raw_input("Press enter to continue...")
+
             elif user_option == '2':
                 print '********Get Credentials********'
                 # Use the identifier to get the username and password for the authenticated user
@@ -78,17 +99,83 @@ def main():
                     user_array[2] = ""
                 else:
                     print "Identifier not found."
+                raw_input("Press enter to continue...")
+
+
             elif user_option == '3':
                 print '********Update Credentials********'
+                user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
+                user_array = user_info.split(" ")
+                user_info = ""
+                if len(user_array) == 3:
+                    print 'here is first info ' + user_array[0]
+                    print 'here is sec info ' + user_array[1]
+                    print 'here is third info ' + user_array[2]
+                    getting_identification = user_array[0]
+                    new_username = raw_input('Input new username: ')
+                    new_passwd = raw_input('Input new password: ')
+                    new_useraccount = UACC(getting_identification,new_username, new_passwd)
+                    print "\n"
+                    if new_useraccount.identifier_is_valid():
+                        if new_useraccount.username_is_valid():
+                            if new_useraccount.password_is_valid():
+                                print "Added New Credentials"
+                                user_array[0] = ""
+                                print ""
+                                user_array[1] = new_username
+                                print "New username: ", user_array[1]
+                                user_array[1] = ""
+                                user_array[2] = new_passwd
+                                print "New password: ", user_array[2]
+                                user_array[2] = ""
+                                encryptedFileEditor.add_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
+
+                            else:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+                        else:
+                            print "Username does not meet requirements. Make sure it has:\n" \
+                                  "- Less than 16 characters\n" \
+                                  "- No whitespace\n" \
+                                  "- Is not blank\n"
+                            if new_useraccount.password_is_valid() == False:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+                    else:
+                        print "Identifier does not meet requirements. Make sure it has:\n" \
+                              "- No digits\n" \
+                              "- No white space\n" \
+                              "- Is not blank. \n"
+                        if new_useraccount.username_is_valid() == False:
+                            print "Username does not meet requirements. Make sure it has:\n" \
+                                  "- Less than 16 characters\n" \
+                                  "- No whitespace\n" \
+                                  "- Is not blank\n"
+                            if new_useraccount.password_is_valid() == False:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+
+                else:
+                    print "Identifier not found."
+
+
+
                 # Use the identifier and update the username and password for that identifier
-                utils.get_identifier()
+                #utils.get_identifier()
                 # Get the new username and password to update
-                utils.get_username()
-                utils.get_passwd()
+                #utils.get_username()
+                #utils.get_passwd()
+                raw_input("Press enter to continue...")
+
             elif user_option == '4':
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
                 utils.get_identifier()
+                raw_input("Press enter to continue...")
+
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except (KeyboardInterrupt, EOFError):
