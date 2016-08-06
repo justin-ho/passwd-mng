@@ -19,40 +19,47 @@ username_error_message = "Username does not meet requirements. Make sure it has:
 
 def add_creds(user_account):
     """Adds the credentials to the datastore if they are valid."""
-    if user_account.identifier_is_valid():
-        if user_account.username_is_valid():
-            if user_account.password_is_valid():
-                encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
-                print "Added Credentials"
+    try:
+        if user_account.identifier_is_valid():
+            if user_account.username_is_valid():
+                if user_account.password_is_valid():
+                    encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
+                    print "Added Credentials"
+                else:
+                    print password_error_message
             else:
-                print password_error_message
+                print username_error_message
+                if not user_account.password_is_valid():
+                    print password_error_message
         else:
-            print username_error_message
-            if not user_account.password_is_valid():
-                print password_error_message
-    else:
-        print identifier_error_message
-        if not user_account.username_is_valid():
-            print username_error_message
-            if not user_account.password_is_valid():
-                print password_error_message
+            print identifier_error_message
+            if not user_account.username_is_valid():
+                print username_error_message
+                if not user_account.password_is_valid():
+                    print password_error_message
+    finally:
+        del user_account
 
 
 def get_creds(identifier):
     """Gets the credentials from the datastore using the given identifier if the identifier is valid."""
-    user_account = UACC(identifier, '', '')
-    if user_account.identifier_is_valid():
-        user_info = encryptedFileEditor.get_user_info(identifier)
-        user_array = user_info.split(" ")
-        del user_info
-        if len(user_array) == 3:
-            print "\nUsername: ", user_array[1]
-            print "Password: ", user_array[2]
-            del user_array
+    try:
+        user_account = UACC(identifier, '', '')
+        if user_account.identifier_is_valid():
+            user_info = encryptedFileEditor.get_user_info(identifier)
+            user_array = user_info.split(" ")
+            if len(user_array) == 3:
+                print "\nUsername: ", user_array[1]
+                print "Password: ", user_array[2]
+            else:
+                print "Identifier not found."
         else:
-            print "Identifier not found."
-    else:
-        print identifier_error_message
+            print identifier_error_message
+    finally:
+        del user_account
+        del user_array
+        del user_info
+        del identifier
 
     # TODO implement update_creds
     # def update_creds(identifier, username, passwd):
