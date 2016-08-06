@@ -1,4 +1,5 @@
 import encFile
+from userAccountException import UserAccountNotFoundError
 
 # File writer/reader
 
@@ -42,5 +43,10 @@ def add_information(data):
     count += 1  # Since we are using 0 as the first index value
     encoded_info.update({count: data})
 
+
 # Removing information
-# def remove_information(key):
+def remove_information(key):
+    try:
+        del encoded_info[key]
+    except KeyError:
+        raise UserAccountNotFoundError('[WARNING] User Account could not be found in encrypted store. Skipping removal...')

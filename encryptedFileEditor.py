@@ -1,5 +1,7 @@
 import encFile
 import fileManipulator
+from userAccountException import UserAccountNotFoundError
+
 
 # Python file to encrypt and create files using the data provided by input
 
@@ -54,6 +56,13 @@ def add_user(identifier, data):
 def get_user_info(identifier):
     return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier))
 
-# Remvoe user information
-# def remove_user(data)
-# to-be-implemented
+
+# Remove user information
+def remove_user(identifier):
+    """Assumes that decrepted_list and encoded_info maintain the same order."""
+    if identifier in decrypted_list:
+        fileManipulator.remove_information(decrypted_list.keys().index(identifier))
+        del decrypted_list[identifier]
+        fileManipulator.write_file()
+    else:
+        raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
