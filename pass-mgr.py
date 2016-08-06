@@ -88,10 +88,11 @@ def main():
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
                 identifier = utils.get_identifier()
-                # TODO call remove_creds function
+                # Call remove_creds function
+                useroptions.remove_creds(identifier)
                 del identifier
-                raw_input("Press enter to continue...")
 
+                raw_input("Press enter to continue...")
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except (KeyboardInterrupt, EOFError):

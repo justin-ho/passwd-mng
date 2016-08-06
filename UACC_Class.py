@@ -1,9 +1,9 @@
 # imports regular expressions
 import re
 
+
 # Created a Username class
 class UACC:
-
     identifier = ''
     username = ''
     password = ''

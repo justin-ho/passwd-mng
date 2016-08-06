@@ -1,5 +1,7 @@
 import encryptedFileEditor
 from UACC_Class import UACC
+from userAccountException import UserAccountNotFoundError
+
 
 # shared error messages to use when validating user input
 password_error_message = "Password does not meet requirements. Make sure it has:\n" \
@@ -56,6 +58,18 @@ def get_creds(identifier):
     # def update_creds(identifier, username, passwd):
     """Updates the credentials given the identifier and the new username and password."""
 
-    # TODO implement remove_creds
-    # def remove_creds(identifier):
+
+def remove_creds(identifier):
     """Removes the credentials using the given identifier."""
+    user_account = UACC(identifier, '', '')
+    try:
+        if user_account.identifier_is_valid():
+            encryptedFileEditor.remove_user(identifier)
+        else:
+            print identifier_error_message
+    except UserAccountNotFoundError:
+        print '[WARNING] User account could not be found using identifier: \"' + identifier + \
+              '\" skipping removal.'
+    finally:
+        del identifier
+        del user_account
