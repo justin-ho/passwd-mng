@@ -85,6 +85,10 @@ def main():
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
                 # cause a pause after running.
+                del identifier
+                del username
+                del passwd
+                del user_account
                 raw_input("Press enter to continue...")
 
             elif user_option == '2':
@@ -104,12 +108,64 @@ def main():
 
             elif user_option == '3':
                 print '********Update Credentials********'
-                # Use the identifier and update the username and password for that identifier
-                utils.get_identifier()
-                # Get the new username and password to update
-                utils.get_username()
-                utils.get_passwd()
+                user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
+                user_array = user_info.split(" ")
+                user_info = ""
+                if len(user_array) == 3:
+                    getting_identification = user_array[0]
+                    new_username = raw_input('Input new username: ')
+                    new_passwd = raw_input('Input new password: ')
+                    new_useraccount = UACC(getting_identification, new_username, new_passwd)
+                    print "\n"
+                    if new_useraccount.identifier_is_valid():
+                        if new_useraccount.username_is_valid():
+                            if new_useraccount.password_is_valid():
+                                print "Added Credentials"
+                                user_array[0] = ""
+                                print ""
+                                user_array[1] = new_username
+                                print "New username: ", user_array[1]
+                                user_array[1] = ""
+                                user_array[2] = new_passwd
+                                print "New password: ", user_array[2]
+                                user_array[2] = ""
+                                encryptedFileEditor.add_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
+                            else:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+                        else:
+                            print "Username does not meet requirements. Make sure it has:\n" \
+                                  "- Less than 16 characters\n" \
+                                  "- No whitespace\n" \
+                                  "- Is not blank\n"
+                            if new_useraccount.password_is_valid() == False:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+                    else:
+                        print "Identifier does not meet requirements. Make sure it has:\n" \
+                              "- No digits\n" \
+                              "- No white space\n" \
+                              "- Is not blank. \n"
+                        if new_useraccount.username_is_valid() == False:
+                            print "Username does not meet requirements. Make sure it has:\n" \
+                                  "- Less than 16 characters\n" \
+                                  "- No whitespace\n" \
+                                  "- Is not blank\n"
+                            if new_useraccount.password_is_valid() == False:
+                                print "Password does not meet requirements. Make sure it has:\n" \
+                                      "- 8-16 characters long\n" \
+                                      "- No whitespace\n"
+
+                else:
+                    print "Identifier not found."
+                del new_useraccount
+                del new_username
+                del new_passwd
+                del getting_identification
                 raw_input("Press enter to continue...")
+
 
             elif user_option == '4':
                 print '********Remove Credentials********'
