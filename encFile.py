@@ -38,7 +38,6 @@ def check_file_creation():
 			openfile.write("\n")
 			key = create_key()
 			openfile.write(key)
-			openfile.write("\n")
 			openfile.close()
 		os_version = 1
 	# Linux
@@ -50,7 +49,6 @@ def check_file_creation():
 			openfile.write("\n")
 			key = create_key()
 			openfile.write(key)
-			openfile.write("\n")
 			openfile.close()
 
 
@@ -165,6 +163,6 @@ def decrypt(key, enc):
 	key1 = key[:32]
 	key2 = key1.encode("ASCII", 'ignore')
 	key3 = key2[:32]
-	iv = enc[:16]
+	iv = enc[:AES.block_size]
 	cipher = AES.new(key3, AES.MODE_CBC, iv)
-	return unpad(cipher.decrypt(enc[16:]))
+	return unpad(cipher.decrypt(enc[AES.block_size:]))
