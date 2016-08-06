@@ -21,8 +21,8 @@ def check_passwd(passwd):
         fileobj.flush()
         fileobj.close()
         # write over the data held in the elements list
-        elements[1] = 0
-        elements[2] = 0
+        del elements
+
     return True
 
 
@@ -84,7 +84,7 @@ def new_passwd(passwd='+35+Pass()'):
     # write the salt +  the password hash to the file
     fileobj.write('$' + salt + '$' + hashlib.pbkdf2_hmac('SHA512', passwd, salt, 100000))
     # flush and close the file stream, and write over the salt and the password variables
-    salt = 0
-    passwd = 0
+    del salt
+    del passwd
     fileobj.flush()
     fileobj.close()
