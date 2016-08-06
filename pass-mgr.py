@@ -5,6 +5,7 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
+import useroptions
 
 
 def main():
@@ -52,7 +53,7 @@ def main():
                 user_account = UACC(identifier,username, passwd)
                 print "\n"
                 # Add the credentials using the given identifier, username, password combo
-                utils.add_creds(user_account)
+                useroptions.add_creds(user_account)
                 # Remove sensitive information from memory
                 del user_account
                 del identifier
@@ -66,7 +67,7 @@ def main():
                 # Use the identifier to get the username and password for the authenticated user
                 identifier = utils.get_identifier()
                 # Call the get_creds function with the given identifier
-                utils.get_creds(identifier)
+                useroptions.get_creds(identifier)
                 del identifier
                 raw_input("Press enter to continue...")
 
