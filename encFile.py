@@ -38,7 +38,6 @@ def check_file_creation():
             openfile.write("\n")
             key = create_key()
             openfile.write(key)
-            openfile.write("\n")
             openfile.close()
         os_version = 1
     # Linux
@@ -50,7 +49,6 @@ def check_file_creation():
             openfile.write("\n")
             key = create_key()
             openfile.write(key)
-            openfile.write("\n")
             openfile.close()
 
 
@@ -72,7 +70,7 @@ def get_username():
     if os_version == 1:
         path = os.path.join(os.path.expandvars("%userprofile%"), "Documents and Settings")
         pathsplit = path.split("\\")
-        username = pathsplit[3]
+        username = pathsplit[2]
     # Linux
     else:
         username = pwd.getpwuid(os.getuid()).pw_name
@@ -165,6 +163,6 @@ def decrypt(key, enc):
     key1 = key[:32]
     key2 = key1.encode("ASCII", 'ignore')
     key3 = key2[:32]
-    iv = enc[:16]
+    iv = enc[:AES.block_size]
     cipher = AES.new(key3, AES.MODE_CBC, iv)
-    return unpad(cipher.decrypt(enc[16:]))
+    return unpad(cipher.decrypt(enc[AES.block_size:]))

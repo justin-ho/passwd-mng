@@ -5,6 +5,7 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
+from userAccountException import UserAccountNotFoundError
 
 def main():
     """User interface for the Password manager"""
@@ -82,6 +83,10 @@ def main():
                             print "Password does not meet requirements. Make sure it has:\n" \
                                   "- 8-16 characters long\n" \
                                   "- No whitespace\n"
+<<<<<<< HEAD
+=======
+                # cause a pause after running.
+>>>>>>> aea5afb5d973b61f7c577f5164528275c77a734a
                 raw_input("Press enter to continue...")
 
             elif user_option == '2':
@@ -89,19 +94,20 @@ def main():
                 # Use the identifier to get the username and password for the authenticated user
                 user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
                 user_array = user_info.split(" ")
-                user_info = ""
+                del user_info
                 if len(user_array) == 3:
-                    user_array[0] = ""
                     print ""
                     print "Username: ", user_array[1]
-                    user_array[1] = ""
                     print "Password: ", user_array[2]
-                    user_array[2] = ""
+                    del user_array
                 else:
                     print "Identifier not found."
                 raw_input("Press enter to continue...")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> aea5afb5d973b61f7c577f5164528275c77a734a
             elif user_option == '3':
                 print '********Update Credentials********'
                 user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
@@ -166,16 +172,41 @@ def main():
                 # Use the identifier and update the username and password for that identifier
                 #utils.get_identifier()
                 # Get the new username and password to update
+<<<<<<< HEAD
                 #utils.get_username()
                 #utils.get_passwd()
+=======
+                utils.get_username()
+                utils.get_passwd()
+>>>>>>> aea5afb5d973b61f7c577f5164528275c77a734a
                 raw_input("Press enter to continue...")
 
             elif user_option == '4':
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
+<<<<<<< HEAD
                 utils.get_identifier()
                 raw_input("Press enter to continue...")
 
+=======
+                identifier = utils.get_identifier()
+                user_account = UACC(identifier, '', '')
+                try:
+                    if user_account.identifier_is_valid():
+                        encryptedFileEditor.remove_user(identifier)
+                    else:
+                        print "Identifier does not meet requirements. Make sure it has:\n" \
+                              "- No digits\n" \
+                              "- No white space\n" \
+                              "- Is not blank. \n"
+                except UserAccountNotFoundError:
+                    print '[WARNING] User account could not be found using identifier: \"' + identifier + \
+                      '\" skipping removal.'
+                finally:
+                    del identifier
+                    del user_account
+                raw_input("Press enter to continue...")
+>>>>>>> aea5afb5d973b61f7c577f5164528275c77a734a
     except authenticationError:
         print '[ERROR] Failed to authenticate. Max amount of tries reached.'
     except (KeyboardInterrupt, EOFError):
