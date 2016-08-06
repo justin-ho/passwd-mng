@@ -65,4 +65,4 @@ def remove_user(identifier):
         del decrypted_list[identifier]
         fileManipulator.write_file()
     else:
-        raise UserAccountNotFoundError("User account not found, skipping removal.")
+        raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
