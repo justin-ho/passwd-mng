@@ -113,21 +113,20 @@ def main():
                 user_info = ""
                 if len(user_array) == 3:
                     getting_identification = user_array[0]
-                    new_username = raw_input('Input new username: ')
-                    new_passwd = raw_input('Input new password: ')
+                    print 'Please enter a new username:'
+                    new_username = utils.get_username()
+                    print 'Please enter a new password:'
+                    new_passwd = utils.get_passwd()
                     new_useraccount = UACC(getting_identification, new_username, new_passwd)
                     print "\n"
                     if new_useraccount.identifier_is_valid():
                         if new_useraccount.username_is_valid():
                             if new_useraccount.password_is_valid():
-                                print "Added Credentials"
+                                print "Added New Credentials"
                                 user_array[0] = ""
-                                print ""
                                 user_array[1] = new_username
-                                print "New username: ", user_array[1]
                                 user_array[1] = ""
                                 user_array[2] = new_passwd
-                                print "New password: ", user_array[2]
                                 user_array[2] = ""
                                 encryptedFileEditor.add_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
                             else:
@@ -184,6 +183,7 @@ def main():
                     print '[WARNING] User account could not be found using identifier: \"' + identifier + \
                       '\" skipping removal.'
                 finally:
+                    print 'Deleted credentials'
                     del identifier
                     del user_account
                 raw_input("Press enter to continue...")
