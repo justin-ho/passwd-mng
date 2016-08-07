@@ -12,12 +12,23 @@ def main():
     """User interface for the Password manager"""
     utils.print_splash()
     try:
+        datastore = 'storage.enc'
         # if there is no existing file get a new password for authentication
         if os.path.isfile('.eta'):
             # Get the password from the user
             utils.authenticate()
         else:
-            print 'Welcome to ETA Password Manager! Please enter a password you want to use to access your account.'
+            print 'Welcome to ETA Password Manager!'
+            if os.path.isfile(datastore):
+                answer = raw_input('A prior instance of the password manager has been found.\n' \
+                'If you are creating a new account, the previous data from the password manager will be overwritten.\n' \
+                'Are you sure you would like to overwrite the previous data? [y/n] ').strip().lower()
+                if answer == 'y':
+                    os.remove(datastore)
+                else:
+                    raise authenticationError("[ERROR] Failed to authenticate. " \
+                    "Previous data detected, and .eta file missing.")
+            print 'Please enter a password you want to use to access your account. '
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
@@ -131,8 +142,8 @@ def main():
                     del identifier
                     del user_account
                 raw_input("Press enter to continue...")
-    except authenticationError:
-        print '[ERROR] Failed to authenticate. Max amount of tries reached.'
+    except authenticationError, autherr:
+        print autherr.message
     except (KeyboardInterrupt, EOFError):
         print "\nDetected Keyboard Interrupt, Quitting pass-mgr..."
     finally:
