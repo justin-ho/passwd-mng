@@ -113,9 +113,10 @@ def main():
                 user_info = ""
                 if len(user_array) == 3:
                     getting_identification = user_array[0]
-                    print 'Please enter a new username:'
+                    old_useraccount = UACC(getting_identification,user_array[1],user_array[2])
+                    print 'Please enter a new username'
                     new_username = utils.get_username()
-                    print 'Please enter a new password:'
+                    print 'Please enter a new password'
                     new_passwd = utils.get_passwd()
                     new_useraccount = UACC(getting_identification, new_username, new_passwd)
                     print "\n"
@@ -123,12 +124,12 @@ def main():
                         if new_useraccount.username_is_valid():
                             if new_useraccount.password_is_valid():
                                 print "Added New Credentials"
-                                user_array[0] = ""
-                                user_array[1] = new_username
-                                user_array[1] = ""
-                                user_array[2] = new_passwd
-                                user_array[2] = ""
-                                encryptedFileEditor.add_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
+                                encryptedFileEditor.update_user(getattr(new_useraccount, 'identifier'),old_useraccount.tostring(),new_useraccount.tostring())
+                                del old_useraccount
+                                del new_useraccount
+                                del new_username
+                                del new_passwd
+                                del getting_identification
                             else:
                                 print "Password does not meet requirements. Make sure it has:\n" \
                                       "- 8-16 characters long\n" \
@@ -159,10 +160,6 @@ def main():
 
                 else:
                     print "Identifier not found."
-                del new_useraccount
-                del new_username
-                del new_passwd
-                del getting_identification
                 raw_input("Press enter to continue...")
 
 

@@ -66,3 +66,15 @@ def remove_user(identifier):
         fileManipulator.write_file()
     else:
         raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
+
+def update_user(identifier, olddata, newdata):
+    if identifier in decrypted_list:
+        fileManipulator.remove_information(decrypted_list.keys().index(identifier))
+        del decrypted_list[identifier]
+        decrypted_list.update({identifier: encFile.encrypt(encFile.obtain_key(encrypted_key), newdata)})
+        fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), newdata))
+        fileManipulator.write_file()
+    else:
+        raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
+
+
