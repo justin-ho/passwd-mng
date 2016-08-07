@@ -32,7 +32,7 @@ def write_file():
         for i in range(0, len(encoded_info) + 1):
             if encoded_info.has_key(i):
                 openedFile.write(encoded_info.get(i))
-                if i >= total_count:
+                if "\n" not in encoded_info.get(i):
                     openedFile.write("\n")
 
 
