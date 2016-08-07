@@ -19,8 +19,8 @@ def init():
     encFile.check_file_creation()
     element_count = fileManipulator.read_file()
     # if element_count == 1:
-    #     encrypted_key = encFile.create_key()
-    #     id = encFile.id_create()
+    #	 encrypted_key = encFile.create_key()
+    #	 id = encFile.id_create()
     # else:
     id = fileManipulator.encoded_info.get(0)
     encrypted_key = fileManipulator.encoded_info.get(1)
@@ -41,30 +41,20 @@ def init():
             else:
                 decrypted_info = encFile.decrypt(encFile.obtain_key(encrypted_key), encrypted_info)
                 decrypted_info_list = str(decrypted_info).split(" ")
-                decrypted_list.update({decrypted_info_list[0]: [encrypted_info, index]})
+                decrypted_list.update({decrypted_info_list[0]: encrypted_info})
                 del decrypted_info_list # prevent reading from memory
 
 
 # Add user information to the file
 def add_user(identifier, data):
-    global element_count
-    element_count += 1
-    decrypted_list.update({identifier: [encFile.encrypt(encFile.obtain_key(encrypted_key), data), element_count + 1]})
-    fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), data))
-    fileManipulator.write_file()
-
-
-# Add user information to the file
-def update_user(identifier, data):
-    index = decrypted_list.get(identifier)[1]
     decrypted_list.update({identifier: encFile.encrypt(encFile.obtain_key(encrypted_key), data)})
-    fileManipulator.update_information(index, encFile.encrypt(encFile.obtain_key(encrypted_key), data))
+    fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), data))
     fileManipulator.write_file()
 
 
 # Returns encoded_info
 def get_user_info(identifier):
-    return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier)[0])
+    return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier))
 
 
 # Remove user information
