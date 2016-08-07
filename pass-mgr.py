@@ -123,13 +123,13 @@ def main():
                     if new_useraccount.identifier_is_valid():
                         if new_useraccount.username_is_valid():
                             if new_useraccount.password_is_valid():
-                                print "Updated With New Credentials"
-                                user_array[0] = ""
-                                user_array[1] = new_username
-                                user_array[1] = ""
-                                user_array[2] = new_passwd
-                                user_array[2] = ""
-                                encryptedFileEditor.add_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
+                                print "Added New Credentials"
+                                encryptedFileEditor.update_user(getattr(new_useraccount, 'identifier'),old_useraccount.tostring(),new_useraccount.tostring())
+                                del old_useraccount
+                                del new_useraccount
+                                del new_username
+                                del new_passwd
+                                del getting_identification
                             else:
                                 print "Password does not meet requirements. Make sure it has:\n" \
                                       "- 8-16 characters long\n" \
