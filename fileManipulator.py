@@ -30,7 +30,6 @@ def write_file():
         openedFile.seek(0)
         for i in range(0, len(encoded_info) + 1):
             if encoded_info.has_key(i):
-                print i, encoded_info.get(i)
                 openedFile.write(encoded_info.get(i))
                 if "\n" not in encoded_info.get(i):
                     openedFile.write("\n")
