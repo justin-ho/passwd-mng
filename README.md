@@ -45,7 +45,8 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 
 # V3
 # Brandon
-*
+* Worked on issue 34 for updating user information
+* Worked on improving UI
 
 # Elliot
 * Worked on issue 26 for passwords not being saved
