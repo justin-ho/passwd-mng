@@ -93,73 +93,81 @@ def main():
 
             elif user_option == '2':
                 print '********Get Credentials********'
-                # Use the identifier to get the username and password for the authenticated user
-                user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
-                user_array = user_info.split(" ")
-                del user_info
-                if len(user_array) == 3:
-                    print ""
-                    print "Username: ", user_array[1]
-                    print "Password: ", user_array[2]
-                    del user_array
-                else:
-                    print "Identifier not found."
+                identifier = utils.get_identifier()
+                try:
+                    # Use the identifier to get the username and password for the authenticated user
+                    user_info = encryptedFileEditor.get_user_info(identifier)
+                    user_array = user_info.split(" ")
+                    del user_info
+                    if len(user_array) == 3:
+                        print ""
+                        print "Username: ", user_array[1]
+                        print "Password: ", user_array[2]
+                        del user_array
+                    else:
+                        print "Identifier not found."
+                except UserAccountNotFoundError:
+                    print '[WARNING] User account could not be found using identifier: \"' + identifier + \
+                          '\" skipping retrial.'
                 raw_input("Press enter to continue...")
 
             elif user_option == '3':
                 print '********Update Credentials********'
-                user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
-                user_array = user_info.split(" ")
-                user_info = ""
-                if len(user_array) == 3:
-                    getting_identification = user_array[0]
-                    old_useraccount = UACC(getting_identification,user_array[1],user_array[2])
-                    print 'Please enter a new username'
-                    new_username = utils.get_username()
-                    print 'Please enter a new password'
-                    new_passwd = utils.get_passwd()
-                    new_useraccount = UACC(getting_identification, new_username, new_passwd)
-                    print "\n"
-                    if new_useraccount.identifier_is_valid():
-                        if new_useraccount.username_is_valid():
-                            if new_useraccount.password_is_valid():
-                                print "Added New Credentials"
-                                encryptedFileEditor.update_user(getattr(new_useraccount, 'identifier'),old_useraccount.tostring(),new_useraccount.tostring())
-                                del old_useraccount
-                                del new_useraccount
-                                del new_username
-                                del new_passwd
-                                del getting_identification
+                identifier = utils.get_identifier()
+                try:
+                    user_info = encryptedFileEditor.get_user_info(identifier)
+                    user_array = user_info.split(" ")
+                    user_info = ""
+                    if len(user_array) == 3:
+                        getting_identification = user_array[0]
+                        old_useraccount = UACC(getting_identification,user_array[1],user_array[2])
+                        print 'Please enter a new username'
+                        new_username = utils.get_username()
+                        print 'Please enter a new password'
+                        new_passwd = utils.get_passwd()
+                        new_useraccount = UACC(getting_identification, new_username, new_passwd)
+                        print "\n"
+                        if new_useraccount.identifier_is_valid():
+                            if new_useraccount.username_is_valid():
+                                if new_useraccount.password_is_valid():
+                                    print "Added New Credentials"
+                                    encryptedFileEditor.update_user(getattr(new_useraccount, 'identifier'),new_useraccount.tostring())
+                                    del old_useraccount
+                                    del new_useraccount
+                                    del new_username
+                                    del new_passwd
+                                    del getting_identification
+                                else:
+                                    print "Password does not meet requirements. Make sure it has:\n" \
+                                          "- 8-16 characters long\n" \
+                                          "- No whitespace\n"
                             else:
-                                print "Password does not meet requirements. Make sure it has:\n" \
-                                      "- 8-16 characters long\n" \
-                                      "- No whitespace\n"
+                                print "Username does not meet requirements. Make sure it has:\n" \
+                                      "- Less than 16 characters\n" \
+                                      "- No whitespace\n" \
+                                      "- Is not blank\n"
+                                if new_useraccount.password_is_valid() == False:
+                                    print "Password does not meet requirements. Make sure it has:\n" \
+                                          "- 8-16 characters long\n" \
+                                          "- No whitespace\n"
                         else:
-                            print "Username does not meet requirements. Make sure it has:\n" \
-                                  "- Less than 16 characters\n" \
-                                  "- No whitespace\n" \
-                                  "- Is not blank\n"
-                            if new_useraccount.password_is_valid() == False:
-                                print "Password does not meet requirements. Make sure it has:\n" \
-                                      "- 8-16 characters long\n" \
-                                      "- No whitespace\n"
-                    else:
-                        print "Identifier does not meet requirements. Make sure it has:\n" \
-                              "- No digits\n" \
-                              "- No white space\n" \
-                              "- Is not blank. \n"
-                        if new_useraccount.username_is_valid() == False:
-                            print "Username does not meet requirements. Make sure it has:\n" \
-                                  "- Less than 16 characters\n" \
-                                  "- No whitespace\n" \
-                                  "- Is not blank\n"
-                            if new_useraccount.password_is_valid() == False:
-                                print "Password does not meet requirements. Make sure it has:\n" \
-                                      "- 8-16 characters long\n" \
-                                      "- No whitespace\n"
+                            print "Identifier does not meet requirements. Make sure it has:\n" \
+                                  "- No digits\n" \
+                                  "- No white space\n" \
+                                  "- Is not blank. \n"
+                            if new_useraccount.username_is_valid() == False:
+                                print "Username does not meet requirements. Make sure it has:\n" \
+                                      "- Less than 16 characters\n" \
+                                      "- No whitespace\n" \
+                                      "- Is not blank\n"
+                                if new_useraccount.password_is_valid() == False:
+                                    print "Password does not meet requirements. Make sure it has:\n" \
+                                          "- 8-16 characters long\n" \
+                                          "- No whitespace\n"
 
-                else:
-                    print "Identifier not found."
+                except UserAccountNotFoundError:
+                    print '[WARNING] User account could not be found using identifier: \"' + identifier + \
+                          '\" skipping update.'
                 raw_input("Press enter to continue...")
 
 

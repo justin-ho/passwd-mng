@@ -41,40 +41,49 @@ def init():
             else:
                 decrypted_info = encFile.decrypt(encFile.obtain_key(encrypted_key), encrypted_info)
                 decrypted_info_list = str(decrypted_info).split(" ")
-                decrypted_list.update({decrypted_info_list[0]: encrypted_info})
+                decrypted_list.update({decrypted_info_list[0]: [encrypted_info, index]})
                 del decrypted_info_list # prevent reading from memory
 
 
 # Add user information to the file
 def add_user(identifier, data):
-    decrypted_list.update({identifier: encFile.encrypt(encFile.obtain_key(encrypted_key), data)})
+    global element_count
+    decrypted_list.update({identifier: [encFile.encrypt(encFile.obtain_key(encrypted_key), data), element_count]})
+    element_count += 1
     fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), data))
     fileManipulator.write_file()
 
 
 # Returns encoded_info
 def get_user_info(identifier):
-    return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier))
+    if identifier in decrypted_list:
+        return encFile.decrypt(encFile.obtain_key(encrypted_key), decrypted_list.get(identifier)[0])
+    else:
+        raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
 
 
 # Remove user information
 def remove_user(identifier):
+    global element_count
     """Assumes that decrepted_list and encoded_info maintain the same order."""
     if identifier in decrypted_list:
-        fileManipulator.remove_information(decrypted_list.keys().index(identifier))
+        element_count -= 1
+        index = decrypted_list[identifier][1]
+        fileManipulator.remove_information(index)
         del decrypted_list[identifier]
         fileManipulator.write_file()
     else:
         raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
 
-def update_user(identifier, olddata, newdata):
+
+
+# Updates user with identifier with new information
+def update_user(identifier, newdata):
     if identifier in decrypted_list:
-        fileManipulator.remove_information(decrypted_list.keys().index(identifier))
-        del decrypted_list[identifier]
-        decrypted_list.update({identifier: encFile.encrypt(encFile.obtain_key(encrypted_key), newdata)})
-        fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), newdata))
+        index = decrypted_list[identifier][1]
+        decrypted_list.update({identifier: [encFile.encrypt(encFile.obtain_key(encrypted_key), newdata), index]})
+        fileManipulator.update_information(index, encFile.encrypt(encFile.obtain_key(encrypted_key), newdata))
         fileManipulator.write_file()
     else:
         raise UserAccountNotFoundError("[WARNING] User account not found in decrypted store, skipping removal.")
-
 

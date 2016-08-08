@@ -26,11 +26,11 @@ def read_file():
 # Appends current file with new information
 # reads file before writing to confirm that it is not appending or reading the wrong file.
 def write_file():
-    length = read_file()
     with open(storage_file, "r+") as openedFile:
         openedFile.seek(0)
         for i in range(0, len(encoded_info) + 1):
             if encoded_info.has_key(i):
+                print i, encoded_info.get(i)
                 openedFile.write(encoded_info.get(i))
                 if "\n" not in encoded_info.get(i):
                     openedFile.write("\n")
@@ -40,13 +40,15 @@ def write_file():
 # -Assumes that data is encoded already
 def add_information(data):
     count = len(encoded_info)
-    count += 1  # Since we are using 0 as the first index value
     encoded_info.update({count: data})
+    count += 1  # Since we are using 0 as the first index value
 
 
 # Takes in information to update encoded_info dictionary
 # -Assumes that data is encoded already
 def update_information(count, data):
+    global encoded_info
+    del encoded_info[count]
     encoded_info.update({count: data})
 
 
