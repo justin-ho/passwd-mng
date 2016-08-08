@@ -40,7 +40,6 @@ def write_file():
 def add_information(data):
     count = len(encoded_info)
     encoded_info.update({count: data})
-    count += 1  # Since we are using 0 as the first index value
 
 
 # Takes in information to update encoded_info dictionary

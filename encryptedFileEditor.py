@@ -32,7 +32,7 @@ def init():
         fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), encrypted_key))
         fileManipulator.write_file()
     else:
-        for index in range(0, element_count + 1):
+        for index in range(0, element_count):
             encrypted_info = fileManipulator.encoded_info.get(index)
             if index == 0:
                 decrypted_list.update({"-id-": encrypted_info})
@@ -48,7 +48,7 @@ def init():
 # Add user information to the file
 def add_user(identifier, data):
     global element_count
-    decrypted_list.update({identifier: [encFile.encrypt(encFile.obtain_key(encrypted_key), data), element_count]})
+    decrypted_list.update({identifier: [encFile.encrypt(encFile.obtain_key(encrypted_key), data), element_count - 1]})
     element_count += 1
     fileManipulator.add_information(encFile.encrypt(encFile.obtain_key(encrypted_key), data))
     fileManipulator.write_file()
