@@ -43,11 +43,23 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 * Fixed issue #15 catching keyboard interrupts 
 
 
+# V3
+# Brandon
+*
+
+# Elliot
+*
+
+# Justin 
+*
+
+
 # To Be Completed
 * Implement updating account credentials
 * Implement removing an account
 * New key generation implementation
 * UI Output Improvements
+
 
 # Licensing
 This project is licensed under the GPLv3 License.
