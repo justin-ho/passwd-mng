@@ -5,31 +5,45 @@ from UACC_Class import UACC
 import encryptedFileEditor
 import os
 from authenticateException import authenticationError
+import useroptions
 
 
 def main():
     """User interface for the Password manager"""
     utils.print_splash()
+    # Menu that the user will see
+    menu = '\nWhat would you like to do?\n\n' \
+           '1. Add Credentials\n' \
+           '2. Get Credentials\n' \
+           '3. Update Credentials\n' \
+           '4. Remove Credentials\n' \
+           '5. Quit\n\n' \
+           'Please enter the integer of your choice: '
+    # user options
+    options = ['1', '2', '3', '4', '5']
+    user_option = 0
     try:
+        datastore = 'storage.enc'
         # if there is no existing file get a new password for authentication
         if os.path.isfile('.eta'):
             # Get the password from the user
             utils.authenticate()
         else:
+            print 'Welcome to ETA Password Manager!'
+            if os.path.isfile(datastore):
+                answer = raw_input('A prior instance of the password manager has been found.\n' \
+                'If you are creating a new account, the previous data from the password manager will be overwritten.\n' \
+                'Are you sure you would like to overwrite the previous data? [y/n] ').strip().lower()
+                if answer == 'y':
+                    os.remove(datastore)
+                else:
+                    raise authenticationError("[ERROR] Failed to authenticate. " \
+                    "Previous data detected, and .eta file missing.")
+            print 'Please enter a password you want to use to access your account. '
             utils.new_passwd(utils.get_passwd())
         # add init here
         encryptedFileEditor.init()
-        # Menu that the user will see
-        menu = '\nWhat would you like to do?\n\n' \
-               '1. Add Credentials\n' \
-               '2. Get Credentials\n' \
-               '3. Update Credentials\n' \
-               '4. Remove Credentials\n' \
-               '5. Quit\n\n' \
-               'Please enter the integer of your choice: '
-        # user options
-        options = ['1', '2', '3', '4', '5']
-        user_option = 0
+        path = os.getcwd()
 
         # Run until the user quits the program
         while user_option != '5':
@@ -43,55 +57,51 @@ def main():
             # Perform the action based on the users choice
             if user_option == '1':
                 print '********Add Credentials********'
-                # add uacc object and pass to elliot
-                user_account = UACC(utils.get_identifier(), utils.get_username(), utils.get_passwd())
-                if user_account.identifier_is_valid():
-                    if user_account.username_is_valid():
-                        if user_account.password_is_valid():
-                            encryptedFileEditor.add_user(getattr(user_account, 'identifier'), user_account.tostring())
-                        else:
-                            print "Password does not meet requirements. Make sure it has:\n" \
-                                  "- 8-16 characters long\n"\
-                                  "- No whitespace\n"
-                    else:
-                        print "Username does not meet requirements. Make sure it has:\n" \
-                              "- Less than 16 characters\n" \
-                              "- No whitespace\n" \
-                              "- Is not blank\n"
-                else:
-                    print "Identifier does not meet requirements. Make sure it has:\n"\
-                    "- No digits\n"\
-                    "- No white space\n"\
-                    "- Is not blank. \n"
+                # add uacc object
+                identifier = utils.get_identifier()
+                username = utils.get_username()
+                passwd = utils.get_passwd()
+                user_account = UACC(identifier,username, passwd)
+                print "\n"
+                # Add the credentials using the given identifier, username, password combo
+                useroptions.add_creds(user_account)
+                # Remove sensitive information from memory
+                del user_account
+                del identifier
+                del username
+                del passwd
+                # cause a pause after running.
+                raw_input("Press enter to continue...")
+
             elif user_option == '2':
                 print '********Get Credentials********'
                 # Use the identifier to get the username and password for the authenticated user
-                user_info = encryptedFileEditor.get_user_info(utils.get_identifier())
-                user_array = user_info.split(" ")
-                user_info = ""
-                if len(user_array) == 3:
-                    user_array[0] = ""
-                    print ""
-                    print "Username: ", user_array[1]
-                    user_array[1] = ""
-                    print "Password: ", user_array[2]
-                    user_array[2] = ""
-                else:
-                    print "Identifier not found."
+                identifier = utils.get_identifier()
+                # Call the get_creds function with the given identifier
+                useroptions.get_creds(identifier)
+                del identifier
+                raw_input("Press enter to continue...")
+
             elif user_option == '3':
                 print '********Update Credentials********'
                 # Use the identifier and update the username and password for that identifier
-                utils.get_identifier()
-                # Get the new username and password to update
-                utils.get_username()
-                utils.get_passwd()
+                identifier = utils.get_identifier()
+                # call update_creds function
+                useroptions.update_creds(identifier)
+                del identifier
+                raw_input("Press enter to continue...")
+
             elif user_option == '4':
                 print '********Remove Credentials********'
                 # Use the identifier and remove the credentials from the datastore
-                utils.get_identifier()
-    except authenticationError:
-        print '[ERROR] Failed to authenticate. Max amount of tries reached.'
-    except KeyboardInterrupt:
+                identifier = utils.get_identifier()
+                # Call remove_creds function
+                useroptions.remove_creds(identifier)
+                del identifier
+                raw_input("Press enter to continue...")
+    except authenticationError, autherr:
+        print autherr.message
+    except (KeyboardInterrupt, EOFError):
         print "\nDetected Keyboard Interrupt, Quitting pass-mgr..."
     finally:
         print "Have a nice day!"

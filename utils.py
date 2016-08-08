@@ -7,7 +7,7 @@ from authenticateException import authenticationError
 
 
 def check_passwd(passwd):
-    """Checks the validity of the password with the password file"""
+    """Checks the validity of the password with the password file."""
     # open the file object
     fileobj = open('.eta', 'rb')
     # split the elements by the $ delimeter
@@ -21,14 +21,13 @@ def check_passwd(passwd):
         fileobj.flush()
         fileobj.close()
         # write over the data held in the elements list
-        elements[1] = 0
-        elements[2] = 0
+        del elements
     return True
 
 
 def authenticate():
     """Gets the password to authenticate the user
-    and allow them to use the password manager"""
+    and allow them to use the password manager."""
 
     # authentication error message
     auth_message = '[ERROR] Failed to authenticate. Incorrect password.'
@@ -43,38 +42,37 @@ def authenticate():
             print auth_message + ' Attempt ' + str(count + 1) + ' of 3'
             if count == 2:
                 raise authenticationError("[ERROR] Failed to authenticate. Max amount of tries reached.")
-                #sys.exit(2)
 
 
 def get_identifier():
-    """Gets the unique site identifier from the user"""
+    """Gets the unique site identifier from the user."""
     # get the identifier from the user
     identifier = raw_input('Identifier:')
     return identifier
 
 
 def get_username():
-    """Gets the username from the user"""
+    """Gets the username from the user."""
     # get the username from the user
     user = raw_input('Username: ')
     return user
 
 
 def get_passwd():
-    """Gets the password from the user"""
+    """Gets the password from the user."""
     # get the password from the user
     return getpass.getpass('Password:')
 
 
 def print_splash():
-    """Prints a banner to the screen"""
+    """Prints a banner to the screen."""
     fileobj = open('banner.ascii', 'r')
     print fileobj.read()
     fileobj.close()
 
 
 def new_passwd(passwd='+35+Pass()'):
-    """Creates a new password for authentication"""
+    """Creates a new password for authentication."""
     # open the file object for writing
     fileobj = open('.eta', 'wb')
     # obtain the salt
@@ -84,7 +82,7 @@ def new_passwd(passwd='+35+Pass()'):
     # write the salt +  the password hash to the file
     fileobj.write('$' + salt + '$' + hashlib.pbkdf2_hmac('SHA512', passwd, salt, 100000))
     # flush and close the file stream, and write over the salt and the password variables
-    salt = 0
-    passwd = 0
+    del salt
+    del passwd
     fileobj.flush()
     fileobj.close()
