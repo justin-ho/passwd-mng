@@ -61,7 +61,6 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 
 
 # To Be Completed
-* New key generation implementation
 
 
 # Licensing
