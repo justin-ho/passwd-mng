@@ -131,6 +131,7 @@ def remove_creds(identifier):
     try:
         if user_account.identifier_is_valid():
             encryptedFileEditor.remove_user(identifier)
+            print 'Deleted Credentials'
         else:
             print identifier_error_message
     except UserAccountNotFoundError:
