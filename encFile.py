@@ -4,7 +4,7 @@ try:
     import pwd
 except ImportError:
     pass
-
+import hashlib
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -94,7 +94,20 @@ def id_verify(check_id):
 def id_create():
     get_username()
     newhash = SHA256.new()
-    newhash.update(username + os.getcwd())
+    try:
+        # open the file object
+        fileobj = open('.eta', 'rb')
+        # split the elements by the $ delimeter
+        elements = fileobj.read().split('$')
+        partkey = elements[2][:20]
+    finally:
+        # flush and close the file object stream
+        fileobj.flush()
+        fileobj.close()
+        # write over the data held in the elements list
+    del elements
+    newhash.update(username + os.getcwd() + partkey)
+    del partkey
     newid = newhash.digest()
     return newid
 
@@ -112,22 +125,47 @@ def current_key(currentkey):
 
 # Get key from provided line - recommended to store key in encrypted form until it is needed
 def obtain_key(line):
-    key = os.getcwd() + get_username()
-    while len(key) < 32:
-        key += os.getcwd() + get_username()
-    return decrypt(key[:32], line)
+    try:
+        # open the file object
+        fileobj = open('.eta', 'rb')
+        # split the elements by the $ delimeter
+        elements = fileobj.read().split('$')
+        partkey = elements[2][:15]
+        partkey2 = elements[2][:4]
+    finally:
+        # flush and close the file object stream
+        fileobj.flush()
+        fileobj.close()
+    m = hashlib.md5()
+    m.update(get_username() + os.getcwd())
+    return decrypt((partkey2 + get_username() + partkey + m.digest())[:32], line)
 
 
 # Create key for file - temporary key generation method
 def create_key():
-    # Python time code from http://stackoverflow.com/questions/35318841/python-how-to-get-location-time-in-windows
-    utc_offset = time.strftime('%z')
-    tz_name = time.tzname[0]
-    key = os.getcwd() + get_username()
-    while len(key) < 32:
-        key += os.getcwd() + get_username()
-    current_key(encrypt(key[:32], username + os.getcwd()))
-    return encrypt(key[:32], username + os.getcwd())  # May not be needed
+    try:
+        # open the file object
+        fileobj = open('.eta', 'rb')
+        # split the elements by the $ delimeter
+        elements = fileobj.read().split('$')
+        partkey = elements[2][:15]
+        partkey2 = elements[2][:4]
+    finally:
+        # flush and close the file object stream
+        fileobj.flush()
+        fileobj.close()
+    # write over the data held in the elements list
+    partial = hashlib.pbkdf2_hmac('SHA512', get_username() + os.getcwd(), elements[1], 100000)
+    del elements
+    m = hashlib.md5()
+    m.update(get_username() + os.getcwd())
+    new_encrypted_key = encrypt((partkey2 + get_username() + partkey + m.digest())[:32], username + os.getcwd() + partkey + partial)
+    del m
+    del partkey2
+    del partkey
+    del partial
+    current_key(new_encrypted_key)
+    return new_encrypted_key  # May not be needed
 
 
 # Encryption from http://stackoverflow.com/questions/12524994/encrypt-decrypt-using-pycrypto-aes-256
@@ -148,10 +186,8 @@ def unpad(s):
 def encrypt(key, raw):
     raw = pad(raw)
     key1 = key[:32]
-    key2 = key1.encode("ASCII", 'ignore')
-    key3 = key2[:32]
     iv = Random.new().read(AES.block_size)
-    cipher = AES.new(key3, AES.MODE_CBC, iv)
+    cipher = AES.new(key1, AES.MODE_CBC, iv)
     return base64.b64encode(iv + cipher.encrypt(raw))
 
 
@@ -161,8 +197,6 @@ def decrypt(key, enc):
         return ""
     enc = base64.b64decode(enc)
     key1 = key[:32]
-    key2 = key1.encode("ASCII", 'ignore')
-    key3 = key2[:32]
     iv = enc[:AES.block_size]
-    cipher = AES.new(key3, AES.MODE_CBC, iv)
+    cipher = AES.new(key1, AES.MODE_CBC, iv)
     return unpad(cipher.decrypt(enc[AES.block_size:]))
