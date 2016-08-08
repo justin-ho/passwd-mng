@@ -48,7 +48,8 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 *
 
 # Elliot
-*
+* Worked on issue 26 for passwords not being saved
+* Worked on issue 34 for updating user information
 
 # Justin 
 *
