@@ -61,7 +61,7 @@ def get_creds(identifier):
         else:
             print identifier_error_message
     except UserAccountNotFoundError, error:
-        print error.message
+        print "Identifier not found"
     finally:
         del user_account
         del user_array
