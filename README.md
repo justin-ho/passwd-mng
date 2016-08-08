@@ -51,14 +51,15 @@ Installation of PyCrypto 2.6.1 is required for the usage. We recommend installin
 *
 
 # Justin 
-*
+* Issue #27 keyboard interrupts
+* Issue #18 python del statement
+* Issue #33 Remove user account feature
+* Issue #39 Remove .eta file (robustness improvement) 
+* Issue #35 reorganize main function
 
 
 # To Be Completed
-* Implement updating account credentials
-* Implement removing an account
 * New key generation implementation
-* UI Output Improvements
 
 
 # Licensing
